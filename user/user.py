@@ -10,7 +10,7 @@ from os import environ
 mysql_host = environ.get('mysql_host', 'gnuu.mysql')
 mysql_port = environ.get('mysql_port', '3306')
 mysql_user = environ.get('mysql_user')
-mysql_passwoed = environ.get('mysql_password')
+mysql_password = environ.get('mysql_password')
 mysql_db = environ.get('mysql_db')
 
 app = Flask(__name__)
