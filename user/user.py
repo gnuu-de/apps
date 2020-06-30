@@ -49,7 +49,7 @@ def user():
             return render_template('user.html', msg=msg)
         else:
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM user WHERE site = %s ', (session['username']))
+            cursor.execute('SELECT * FROM user WHERE site = %s ', (session['username'],))
             account = cursor.fetchone()
             if account:
                 anrede = account['anrede']
@@ -78,7 +78,7 @@ def login():
         password = request.form['password']
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM user WHERE site = %s ', (username))
+        cursor.execute('SELECT * FROM user WHERE site = %s ', (username,))
         # Fetch one record and return result
         account = cursor.fetchone()
         # If account exists in accounts table in out database
