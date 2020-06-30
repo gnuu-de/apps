@@ -27,8 +27,49 @@ app.config['MYSQL_DB'] = mysql_db
 mysql = MySQL(app)
 
 @app.route('/cgi-bin/user.cgi', methods=['GET', 'POST'])
+def user():
+    msg = ''
+    if session['loggedin'] = True:
+        if request.method == 'POST' and 'site' in request.form:
+            site = request.form['site']
+            anrede = request.form['anrede']
+            vorname = request.form['vorname']
+            nachname = request.form['nachname']
+            strasse1 = request.form['strasse1']
+            strasse2 = request.form['strasse2']
+            land = request.form['land']
+            plz = request.form['plz']
+            ort = request.form['ort']
+            telefon = request.form['telefon']
+            telefax = request.form['telefax']
+            email = request.form['email']
+            geburtstag = request.form['geburtstag']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('"UPDATE user SET anrede = %s , vorname = %s, nachname = %s, strasse1 = %s, strasse2 = %s, land = %s, plz = %s, ort = %s, telefon = %s, telefax = %s, email = %s, geburtstag = %s WHERE site = %s ', (anrede,vorname,nachnahme,strasse1,strasse2,land,plz,orrt,telefon,telefax,email,geburtstag,site))
+            return render_template('user.html', msg=msg)
+        else:
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM user WHERE site = %s ', (site))
+            account = cursor.fetchone()
+            if account:
+                anrede = account['anrede']
+                vorname = account['vorname']
+                nachname = account['nachname']
+                strasse1 = account['strasse1']
+                strasse2 = account['strasse2']
+                land = account['land']
+                plz = account['plz']
+                ort = account['ort']
+                telefon = account['telefon']
+                telefax = account['telefax']
+                email = account['email']
+                geburtstag = account['geburtstag']
+        return render_template('user.html', msg=msg)
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/cgi-bin/login.cgi', methods=['GET', 'POST'])
 def login():
-    # Output message if something goes wrong...
     msg = ''
     # Check if "username" and "password" POST requests exist (user submitted form)
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
@@ -37,7 +78,7 @@ def login():
         password = request.form['password']
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM user WHERE site = %s ', (username,))
+        cursor.execute('SELECT * FROM user WHERE site = %s ', (username))
         # Fetch one record and return result
         account = cursor.fetchone()
         # If account exists in accounts table in out database
@@ -51,14 +92,15 @@ def login():
             ## compare_hash(crypt.crypt(cleartext, cryptedpasswd), cryptedpasswd)
             if compare_hash(crypt.crypt(password, cryptedpasswd), cryptedpasswd):
             # Redirect to home page
-                return 'Logged in successfully!'
+                return redirect(url_for('user'))
+                #return 'Logged in successfully!'
         else:
             # Account doesnt exist or username/password incorrect
             msg = 'Incorrect username/password!'
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg)
 
-@app.route('/logout')
+@app.route('/cgi-bin/logout.cgi')
 def logout():
     # Remove session data, this will log the user out
    session.pop('loggedin', None)
