@@ -1,29 +1,68 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8">
-		<title>Login</title>
-		<link rel="stylesheet" href="https://k8s.gnuu.de/css/gnuu.css') }}">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+		<title>germany.net uucp - gnuu.de</title>
+		<link rel="stylesheet" href="https://k8s.gnuu.de/css/gnuu.css">
 	</head>
-	<body>
-		<div class="login">
-			<h1>Login</h1>
-			<div class="links">
-				<a href="{{ url_for('login') }}" class="active">Login</a>
-			</div>
-			<form action="{{ url_for('login') }}" method="post">
-				<label for="username">
-					<i class="fas fa-user"></i>
-				</label>
-				<input type="text" name="username" placeholder="Username" id="username" required>
-				<label for="password">
-					<i class="fas fa-lock"></i>
-				</label>
-				<input type="password" name="password" placeholder="Password" id="password" required>
-				<div class="msg">{{ msg }}</div>
-				<input type="submit" value="Login">
+<body leftmargin=0 topmargin=0 marginwidth=0 marginheight=0 bgColor="#EFF1FE">
+<table width=700 border=0 cellspacing=0 cellpadding=0>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="7">
+		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+			<tr>
+				<td class="txtweiss15"><b>gnuu::login</b></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="7">
+			<form action="/cgi-bin/user.cgi" method="POST">
+			<table border=0>
+			<tr>
+				<td class="txtblack14">Sitename: </td>
+				<td class="txtblack14">
+					<input type="text" name="username" size="30" maxlenght="64">
+				</td>
+			</tr>
+			<tr>
+				<td class="txtblack14">Password: </td>
+				<td class="txtblack14">
+					<input type="password" name="password" size="30" maxlenght="64">
+				</td>
+			</tr>
+			<tr>
+				<td class="txtblack14">&nbsp;
+					<input type="hidden" name="recheck" value="leer">
+				</td>
+				<td class="txtblack14">
+					<input type="submit" value="Login" width="100">&nbsp;&nbsp;<br>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td class="txtblack14">&nbsp;
+					<div class="msg">{{ msg }}</div>
+					<input type="hidden" name="recheck" value="leer">
+				</td>
+			</tr>
+			</table>
 			</form>
-		</div>
-	</body>
+
+		</td>
+	</tr>
+	<tr>
+		<td colspan=7>
+		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+			<tr>
+				<td class="txtweiss9">&copy; Frank Kl&ouml;ker &lt;eumel (at) admin.gnuu.de&gt;</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+</body>
 </html>
