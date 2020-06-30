@@ -29,7 +29,7 @@ mysql = MySQL(app)
 @app.route('/cgi-bin/user.cgi', methods=['GET', 'POST'])
 def user():
     msg = ''
-    if session['loggedin'] = True:
+    if session['loggedin'] == True:
         if request.method == 'POST' and 'site' in request.form:
             site = request.form['site']
             anrede = request.form['anrede']
