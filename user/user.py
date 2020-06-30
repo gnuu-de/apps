@@ -49,7 +49,7 @@ def user():
             return render_template('user.html', msg=msg)
         else:
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM user WHERE site = %s ', (site))
+            cursor.execute('SELECT * FROM user WHERE site = %s ', (session['username']))
             account = cursor.fetchone()
             if account:
                 anrede = account['anrede']
