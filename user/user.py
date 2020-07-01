@@ -214,7 +214,7 @@ def logout():
     else:
         return render_template('index.html', msg=msg)
 
-@app.route('/cgi-bin/index.cgi')
+@app.route('/cgi-bin/index.html')
 def index():
     return redirect('/')
 
