@@ -214,6 +214,10 @@ def logout():
     else:
         return render_template('index.html', msg=msg)
 
+@app.route('/cgi-bin/index.cgi')
+def index():
+    return redirect('/')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     # Output message if something goes wrong...
