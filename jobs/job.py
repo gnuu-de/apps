@@ -46,7 +46,7 @@ def uucppasswd():
     cursor.execute('SELECT site,password FROM user WHERE pwquestion != "" AND failed < 6')
     passwords = cursor.fetchall()
     if passwords:
-        fp = open('passwd','w')
+        fp = open('/home/appuser/uucp/passwd','w')
         for row in passwords:
             fp.write("%s %s\n" % (str(row["site"]),str(row['password'])))
         fp.close()
@@ -60,7 +60,7 @@ def uucpsys():
     cursor.execute('SELECT conf.site as site,conf.compression as compression FROM conf,user WHERE conf.site=user.site')
     syss = cursor.fetchall()
     if syss:
-        fp = open('sys','w')
+        fp = open('/home/appuser/uucp/sys','w')
         fp.write("# gnuu sys uucp conf\n")
         fp.write("call-login\n")
         fp.write("call-password\n")
@@ -93,13 +93,13 @@ def newsfeeds():
     cursor.execute('SELECT site, newsgroups, pathexcludes, maxsize, maxcross, ownarticles FROM conf')
     newsfeeds = cursor.fetchall()
     if newsfeeds:
-        fp = open('newsfeeds','wb')
+        fp = open('/home/appuser/news/newsfeeds','wb')
         remotenewsfeeds = urllib.request.urlopen('https://raw.githubusercontent.com/gnuu-de/serverconfig/master/etc/news/newsfeeds.default')
         defaultnewsfeed = remotenewsfeeds.read()
         if defaultnewsfeed:
             fp.write(defaultnewsfeed)
         fp.close()
-        fp = open('newsfeeds','a+')
+        fp = open('/home/appuser/news/newsfeeds','a+')
         fp.write("# user newsfeeds\n")
         for row in newsfeeds:
             site = row['site']
@@ -129,12 +129,12 @@ def newsuucp():
     cursor.execute('SELECT site, compression, maxbatchsize, batchtime FROM conf')
     batchtimes = cursor.fetchall()
     if batchtimes:
-        fp300 = open('send-uucp.cf.300','w')
-        fp1800 = open('send-uucp.cf.1800','w')
-        fp3600 = open('send-uucp.cf.3600','w')
-        fp21600 = open('send-uucp.cf.21600','w')
-        fp43200 = open('send-uucp.cf.43200','w')
-        fp86400 = open('send-uucp.cf.86400','w')
+        fp300 = open('/home/appuser/news/send-uucp.cf.300','w')
+        fp1800 = open('/home/appuser/news/send-uucp.cf.1800','w')
+        fp3600 = open('/home/appuser/news/send-uucp.cf.3600','w')
+        fp21600 = open('/home/appuser/news/send-uucp.cf.21600','w')
+        fp43200 = open('/home/appuser/news/send-uucp.cf.43200','w')
+        fp86400 = open('/home/appuser/news/send-uucp.cf.86400','w')
         for row in batchtimes:
             site = row['site']
             compression = row['compression']
