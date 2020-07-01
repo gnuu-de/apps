@@ -201,15 +201,18 @@ def login():
 @app.route('/cgi-bin/logout.cgi')
 def logout():
     # Remove session data, this will log the user out
-   cookie = request.cookies.get('gnuu')
-   session.pop('loggedin', None)
-   session.pop('id', None)
-   session.pop('site', None)
-   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-   cursor.execute('DELETE FROM sessions WHERE id = %s',(cookie,))
-   response = make_response(redirect(url_for('login')))
-   response.set_cookie("gnuu",cookie, max_age=0)
-   return response
+    cookie = request.cookies.get('gnuu')
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('site', None)
+    if cookie:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('DELETE FROM sessions WHERE id = %s',(cookie,))
+        response = make_response(redirect(url_for('login')))
+        response.set_cookie("gnuu",cookie, max_age=0)
+        return response
+    else:
+        return render_template('index.html', msg=msg)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
