@@ -25,20 +25,6 @@ app.config['MYSQL_DB'] = mysql_db
 # Intialize MySQL
 mysql = MySQL(app)
 
-@app.route('/update/news', methods=['GET', 'POST'])
-def news():
-    msg = ''
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    #cursor.execute('SELECT * FROM sessions WHERE id = %s', (cookie,))
-    cursor.execute('SELECT * FROM sessions')
-    cookiesession = cursor.fetchone()
-    if cookiesession:
-        site = cookiesession['site']
-        cursor.execute('SELECT site,vorname,nachname,email FROM user ORDER BY site')
-        groupdata = cursor.fetchall()
-        if groupdata:
-            return redirect("/")
-
 @app.route('/update/uucp/passwd', methods=['GET', 'POST'])
 def uucppasswd():
     msg = ''
