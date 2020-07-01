@@ -24,54 +24,54 @@
 				<table border=0 width=600 cellspacing=1 cellpadding=2 class="bgdarkgray">
 					<tr class="bggray">
 						<td class="txt11"><b> Site</b></td>
-						<td class="txtblue11" colspan=2><b>{{ session['username'] }}</b>
-							<a href="/cgi-bin/billing.cgi"> {{ biling['sum'] }}</a>
+						<td class="txtblue11" colspan=2><b>{{ site }}</b>
+							<a href="/cgi-bin/billing.cgi"> {{ billingsum }}</a>
 						</td>
 					</tr>
 					<tr class="bggray">
 						<td class="txt10">Anrede:</td>
-						<td class="txt10" colspan=2><input type="text" name="anrede" size="20" maxlenght="64" value={{ anrede }}> </td>
+						<td class="txt10" colspan=2><input type="text" name="anrede" size="20" maxlenght="64" value="{{ anrede }}"> </td>
 					</tr>
 					<tr class="bggray">
-						<td class="txt10">Vorname:</td><td class="txt10" colspan=2><input type="text" name="vorname" size="20" maxlenght="64" value={{ vorname }}></td>
+						<td class="txt10">Vorname:</td><td class="txt10" colspan=2><input type="text" name="vorname" size="20" maxlenght="64" value="{{ vorname }}"></td>
 					</tr>
 					<tr class="bggray">
 						<td class="txt10">Nachname:</td>
-						<td class="txt10" colspan=2><input type="text" name="nachname" size="20" maxlenght="64" value={{ nachname }}></td>
+						<td class="txt10" colspan=2><input type="text" name="nachname" size="20" maxlenght="64" value="{{ nachname }}"></td>
 					</tr>
 					<tr class="bggray">
 						<td class="txt10">Strasse:</td>
-						<td class="txt10" colspan=2><input type="text" name="strasse1" size="20" maxlenght="64" value={{ strasse1 }}></td>
+						<td class="txt10" colspan=2><input type="text" name="strasse1" size="20" maxlenght="64" value="{{ strasse1 }}"></td>
 					</tr>
 					<tr class="bggray">
-						<td class="txt10">Strasse:</td><td class="txt10" colspan=2><input type="text" name="strasse2" size="20" maxlenght="64" value={{ strasse2 }}></td>
+						<td class="txt10">Strasse:</td><td class="txt10" colspan=2><input type="text" name="strasse2" size="20" maxlenght="64" value="{{ strasse2 }}"></td>
 					</tr>
 					<tr class="bggray">
 						<td class="txt10">Land:</td>
-						<td class="txt10" colspan=2><input type="text" name="land" size="20" maxlenght="64" value={{ land }}></td>
+						<td class="txt10" colspan=2><input type="text" name="land" size="20" maxlenght="64" value="{{ land }}"></td>
 					</tr>
 					<tr class="bggray">
-						<td class="txt10">PLZ:</td><td class="txt10" colspan=2><input type="text" name="plz" size="20" maxlenght="64" value={{ plz }}></td>
+						<td class="txt10">PLZ:</td><td class="txt10" colspan=2><input type="text" name="plz" size="20" maxlenght="64" value="{{ plz }}"></td>
 					</tr>
 					<tr class="bggray">
-						<td class="txt10">Ort:</td><td class="txt10" colspan=2><input type="text" name="ort" size="20" maxlenght="64" value={{ ort }}></td>
+						<td class="txt10">Ort:</td><td class="txt10" colspan=2><input type="text" name="ort" size="20" maxlenght="64" value="{{ ort }}"></td>
 					</tr>
 					<tr class="bggray">
-						<td class="txt10">Telefon:</td><td class="txt10" colspan=2><input type="text" name="telefon" size="20" maxlenght="64" value={{ telefon }}></td>
+						<td class="txt10">Telefon:</td><td class="txt10" colspan=2><input type="text" name="telefon" size="20" maxlenght="64" value="{{ telefon }}"></td>
 					</tr>
 					<tr class="bggray">
-						<td class="txt10">Telefax:</td><td class="txt10" colspan=2><input type="text" name="telefax" size="20" maxlenght="64" value={{ telefax }}></td>
+						<td class="txt10">Telefax:</td><td class="txt10" colspan=2><input type="text" name="telefax" size="20" maxlenght="64" value="{{ telefax }}"></td>
 					</tr>
 					<tr class="bggray">
-						<td class="txt10">Email:</td><td class="txt10" colspan=2><input type="text" name="email" size="20" maxlenght="64" value={{ email }}></td>
+						<td class="txt10">Email:</td><td class="txt10" colspan=2><input type="text" name="email" size="20" maxlenght="64" value="{{ email }}"></td>
 					</tr>
 					<tr class="bggray">
-						<td class="txt10">Geburtstag:</td><td class="txt10" colspan=2><input type="text" name="geburtstag" size="20" maxlenght="64" value={{ geburtstag }}></td>
+						<td class="txt10">Geburtstag:</td><td class="txt10" colspan=2><input type="text" name="geburtstag" size="20" maxlenght="64" value="{{ geburtstag }}"></td>
 					</tr>
 					<tr class="bggray">
 						<td><input type="hidden" name="select" value="uuserdata"></td>
 					<tr class="bggray">
-						<td><input type="hidden" name="site" value={{ session['username'] }}></td>
+						<td><input type="hidden" name="site" value="{{ site }}"></td>
 						<td><input type="submit" value="Update" width=100><br>
 						<a href="/cgi-bin/logout.cgi"><font class="txtred8">[Logout]</font></a>
 						&nbsp;&nbsp;

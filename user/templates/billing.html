@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>germany.net uucp - gnuu.de</title>
+		<link rel="stylesheet" href="https://k8s.gnuu.de/css/gnuu.css">
+	</head>
+<body leftmargin=0 topmargin=0 marginwidth=0 marginheight=0 bgColor="#EFF1FE">
+<table width=700 border=0 cellspacing=0 cellpadding=0>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="7">
+		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+			<tr>
+				<td class="txtweiss15"><b>gnuu::billing</b></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="7">
+			<table border=0 width=600 cellspacing=1 cellpadding=2 class="bgdarkgray">
+			{% for row in billingdata %}
+			    <tr>
+    				<td>{{ row.id }}</td>
+    				<td>{{ "{:,.2f} EUR".format(row.euro) }}</td>
+    				<td>{{ row.booktime }}</td>
+			    </tr>
+			{% endfor %}
+
+			</table>
+			</form>
+
+		</td>
+	</tr>
+	<tr>
+		<td colspan=7>
+		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+			<tr>
+				<td class="txtweiss9">&copy; Frank Kl&ouml;ker &lt;eumel (at) admin.gnuu.de&gt;</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>
