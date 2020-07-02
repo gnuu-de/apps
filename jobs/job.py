@@ -6,6 +6,7 @@ import csv
 import urllib.request
 from hmac import compare_digest as compare_hash
 from os import environ
+import subprocess
 
 
 mysql_host = environ.get('mysql_host','localhost')
