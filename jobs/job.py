@@ -157,8 +157,8 @@ def configmaps():
     uucpsys()
     newsfeeds()
     newsuucp()
-    configmap_uucp = "kubectl create configmap gnuu-uucp --from-file=./passwd --from-file=./sys -o yaml --dry-run=client | kubectl apply -f -".format(result_uucp)
-    configmap_news = "kubectl create configmap gnuu-news --from-file=./newsfeeds --from-file=./send-uucp.cf.300 --from-file=./send-uucp.cf.1800 --from-file=./send-uucp.cf.3600 --from-file=./send-uucp.cf.21600 --from-file=./send-uucp.cf.43200 --from-file=./send-uucp.cf.86400 -o yaml --dry-run=client | kubectl apply -f -".format(result_news)
+    configmap_uucp = "kubectl create configmap gnuu-uucp --from-file=./passwd --from-file=./sys -o yaml --dry-run=client | kubectl apply -f -"
+    configmap_news = "kubectl create configmap gnuu-news --from-file=./newsfeeds --from-file=./send-uucp.cf.300 --from-file=./send-uucp.cf.1800 --from-file=./send-uucp.cf.3600 --from-file=./send-uucp.cf.21600 --from-file=./send-uucp.cf.43200 --from-file=./send-uucp.cf.86400 -o yaml --dry-run=client | kubectl apply -f -"
     try:
         result_uucp = subprocess.check_output(
             [configmap_uucp], shell=True)
