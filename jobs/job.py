@@ -42,6 +42,28 @@ def uucppasswd():
     resp = jsonify(success=True)
     return resp
 
+@app.route('/update/uucp/port', methods=['GET', 'POST'])
+def uucpport():
+    fp = open('port','w')
+    fp.write("port    tcp\n")
+    fp.write("    type tcp\n")
+    fp.write("    protocol t\n")
+    fp.close()
+    resp = jsonify(success=True)
+    return resp
+
+@app.route('/update/uucp/config', methods=['GET', 'POST'])
+def uucpconfig():
+    fp = open('config','w')
+    fp.write("nodename uucp.gnuu.de\n")
+    fp.write("spool /data/spool/uucp\n")
+    fp.write("logfile /data/spool/uucp/Log\n")
+    fp.write("statfile /data/spool/uucp/Stats\n")
+    fp.write("debugfile /data/spool/uucp/Debug\n")
+    fp.close()
+    resp = jsonify(success=True)
+    return resp
+
 @app.route('/update/uucp/sys', methods=['GET', 'POST'])
 def uucpsys():
     msg = ''
@@ -154,11 +176,13 @@ def newsuucp():
 
 @app.route('/update/configmaps', methods=['GET', 'POST'])
 def configmaps():
+    uucpconfig()
+    uucpport()
     uucppasswd()
     uucpsys()
     newsfeeds()
     newsuucp()
-    configmap_uucp = "kubectl create configmap gnuu-uucp --from-file=./passwd --from-file=./sys -o yaml --dry-run=client | kubectl apply -f -"
+    configmap_uucp = "kubectl create configmap gnuu-uucp --from-file=./config  --from-file=./port --from-file=./passwd --from-file=./sys -o yaml --dry-run=client | kubectl apply -f -"
     configmap_news = "kubectl create configmap gnuu-news --from-file=./newsfeeds --from-file=./send-uucp.cf.300 --from-file=./send-uucp.cf.1800 --from-file=./send-uucp.cf.3600 --from-file=./send-uucp.cf.21600 --from-file=./send-uucp.cf.43200 --from-file=./send-uucp.cf.86400 -o yaml --dry-run=client | kubectl apply -f -"
     try:
         result_uucp = subprocess.check_output(
