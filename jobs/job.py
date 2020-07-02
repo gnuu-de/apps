@@ -2,6 +2,8 @@ from flask import Flask, redirect, url_for, request, jsonify
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
+import csv
+import urllib.request
 from hmac import compare_digest as compare_hash
 from os import environ
 
