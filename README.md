@@ -23,3 +23,5 @@ Job API for config update
 * /update/news/feeds - update newsfeeds
 * /update/news/uucp - update uucp batcher
 
+* /update/configmaps - call all functions and write configmaps to K8s
+
