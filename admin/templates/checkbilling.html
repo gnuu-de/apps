@@ -11,6 +11,12 @@
 	<tr>
 		<td colspan="7">
 			<table border=0 width=600 cellspacing=1 cellpadding=2 class="bgdarkgray">
+				<tr class="bggray">
+					<td>
+					<a href="/adm/index.cgi"><font class="txtred8">[Menu]</font></a>
+					&nbsp;&nbsp;
+					</td>
+				</tr>
 			{% for row in billingdata %}
 			    <tr>
     				<td>{{ row.site }}</td>
@@ -21,9 +27,14 @@
 			{% endfor %}
 
 			</table>
-			</form>
-
 		</td>
+				<tr class="bggray">
+					<td>
+					<a href="/adm/logout.cgi"><font class="txtred8">[Logout]</font></a>
+					&nbsp;&nbsp;
+					</td>
+				</tr>
+
 	</tr>
 	<tr>
 		<td colspan=7>

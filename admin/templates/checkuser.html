@@ -13,6 +13,11 @@
 			<form action="/adm/checkuser.cgi/{{ site }}" method="POST">
 				<table border=0 width=600 cellspacing=1 cellpadding=2 class="bgdarkgray">
 					<tr class="bggray">
+						<a href="/adm/index.cgi"><font class="txtred8">[Menu]</font></a>
+						&nbsp;&nbsp;
+						</td>
+					</tr>
+					<tr class="bggray">
 						<td class="txt11"><b> Site</b></td>
 						<td class="txtblue11" colspan=2><b>{{ site }}</b>
 							<a href="/cgi-bin/billing.cgi"> {{ billingsum }}</a>
@@ -65,7 +70,6 @@
 						<td class="txt10">Status:</td><td class="txt10" colspan=2><input type="text" name="status" size="20" maxlenght="64" value="{{ status }}"></td>
 					</tr>
 					<tr class="bggray">
-						<td><input type="hidden" name="select" value="uuserdata"></td>
 						<td class="txt10">{{ msg }} </td>
 					<tr class="bggray">
 						<td><input type="hidden" name="site" value="{{ site }}"></td>
