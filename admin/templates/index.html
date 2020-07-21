@@ -1,0 +1,42 @@
+{% include 'header.html' %}
+	<tr>
+		<td colspan="7">
+		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+			<tr>
+				<td class="txtweiss15"><b>gnuu::adm::index</b></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="7">
+				{{ msg }} 
+		</td>
+		<tr><td colspan="7">
+
+
+		This is the Admin Interface. Take your choice:
+		<ul>
+		<li><a href="/cgi-bin/admin.cgi?mode=view_history&select=view_history">View history</a>
+		<li><a href="/cgi-bin/admin.cgi?mode=clear_sessions">Clear sessions</a>
+		<li><a href="/adm/addbilling.cgi">Add billing</a>
+		<li><a href="/adm/checkbilling.cgi">Check billing</a>
+		<li><a href="/adm/checkuser.cgi">Check user</a> (/site or /email)
+		<li><a href="/adm/adduser.cgi">Add user</a>
+		</ul>
+		<a href="/adm/logout.cgi"><font class="txtred8">[Logout]</font></a>
+		</td>
+
+	</tr>
+	<tr>
+		<td colspan=7>
+		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+			<tr>
+				<td class="txtweiss9">&copy; Frank Kl&ouml;ker &lt;eumel (at) admin.gnuu.de&gt;</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

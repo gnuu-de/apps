@@ -3,14 +3,14 @@
 		<td colspan="7">
 		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
 			<tr>
-				<td class="txtweiss15"><b>gnuu::login</b></td>
+				<td class="txtweiss15"><b>gnuu::adm::login</b></td>
 			</tr>
 		</table>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="7">
-			<form action="/cgi-bin/login.cgi" method="POST">
+			<form action="/adm/login.cgi" method="POST">
 
 			<table border=0>
 			<tr>
@@ -26,14 +26,18 @@
 				</td>
 			</tr>
 			<tr>
+				<td class="txtblack14">&nbsp;
+					<input type="hidden" name="recheck" value="leer">
+				</td>
 				<td class="txtblack14">
 					<input type="submit" value="Login" width="100">&nbsp;&nbsp;<br>
 				</td>
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
-				<td class="txtrot11">&nbsp;
-					<div>{{ msg }}</div>
+				<td class="txtblack14">&nbsp;
+					<div class="msg">{{ msg }}</div>
+					<input type="hidden" name="recheck" value="leer">
 				</td>
 			</tr>
 			</table>

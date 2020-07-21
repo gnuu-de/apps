@@ -6,6 +6,10 @@ import crypt
 from hmac import compare_digest as compare_hash
 from os import environ
 import secrets
+import random
+import string
+from marshmallow import Schema, fields
+from marshmallow.validate import Length, Range
 
 
 mysql_host = environ.get('mysql_host','localhost')
@@ -26,6 +30,150 @@ app.config['MYSQL_DB'] = mysql_db
 
 # Intialize MySQL
 mysql = MySQL(app)
+
+
+class ValidateInputSchemaPwfailed(Schema):
+    site = fields.Str(required=True, validate=Length(max=13))
+    password = fields.Str(required=False, validate=Length(max=64))
+    pwquestion = fields.Str(required=True, validate=Length(max=64))
+    pwanswer = fields.Str(required=True, validate=Length(max=64))
+
+class ValidateInputSchemaAdduser(Schema):
+    site = fields.Str(required=True, validate=Length(max=13))
+    password = fields.Str(required=False, validate=Length(max=64))
+    email = fields.Email(required=False, validate=Length(max=64))
+    pwquestion = fields.Str(required=True, validate=Length(max=255))
+    pwanswer = fields.Str(required=True, validate=Length(max=255))
+    checkfield = fields.Str(required=True, validate=Length(max=6))
+    hcheck = fields.Str(required=True, validate=Length(max=6))
+
+class ValidateInputSchemaConf(Schema):
+    site = fields.Str(required=True, validate=Length(max=13))
+    newsgroups = fields.Str(required=True)
+    pathexcludes = fields.Str(required=False, validate=Length(max=64))
+    maxcross = fields.Int(required=True, validate=Range(min=0,max=99))
+    maxsize = fields.Int(required=True, validate=Range(min=5000,max=1000000))
+    ownarticles = fields.Int(required=False, validate=Range(min=0,max=1))
+    compression = fields.Str(required=True, validate=Length(max=64))
+    maxbatchsize = fields.Int(required=True, validate=Range(min=0,max=1000000))
+    batchtime = fields.Int(required=True, validate=Range(min=300,max=86400))
+    subdomain1 = fields.Str(required=False)
+    subdomain2 = fields.Str(required=False)
+    subdomain3 = fields.Str(required=False)
+    subdomain4 = fields.Str(required=False)
+    subdomain5 = fields.Str(required=False)
+    subdomain6 = fields.Str(required=False)
+    subdomain7 = fields.Str(required=False)
+    subdomain8 = fields.Str(required=False)
+    subdomain9 = fields.Str(required=False)
+    subdomain10 = fields.Str(required=False)
+
+class ValidateInputSchemaUser(Schema):
+    site = fields.Str(required=True, validate=Length(max=13))
+    anrede = fields.Str(required=True, validate=Length(max=10))
+    vorname = fields.Str(required=True, validate=Length(max=64))
+    nachname = fields.Str(required=True, validate=Length(max=64))
+    strasse1 = fields.Str(required=True, validate=Length(max=128))
+    strasse2 = fields.Str(required=False, validate=Length(max=128))
+    land = fields.Str(required=True, validate=Length(max=2))
+    plz = fields.Int(required=True)
+    ort = fields.Str(required=False, validate=Length(max=128))
+    telefon = fields.Str(required=False, validate=Length(max=64))
+    telefax = fields.Str(required=False, validate=Length(max=64))
+    email = fields.Email(required=True, validate=Length(max=128))
+    geburtstag = fields.Str(required=False, validate=Length(max=10))
+
+class ValidateInputSchemaLogin(Schema):
+    username = fields.Str(required=True, validate=Length(max=13))
+    password = fields.Str(required=False, validate=Length(max=64))
+
+
+validate_input_schema_pw_failed = ValidateInputSchemaPwfailed()
+validate_input_schema_adduser = ValidateInputSchemaAdduser()
+validate_input_schema_conf = ValidateInputSchemaConf()
+validate_input_schema_user = ValidateInputSchemaUser()
+validate_input_schema_login = ValidateInputSchemaLogin()
+
+@app.route('/cgi-bin/adduser.cgi', methods=['GET', 'POST'])
+def adduser():
+    msg = ''
+    letters = string.ascii_lowercase
+    checkfield = ''.join(random.sample(letters, 5))
+    if request.method == 'POST' and 'site' in request.form:
+        checkfield = request.form['checkfield']
+        hcheck = request.form['hcheck']
+        site = request.form['site']
+        email = request.form['email']
+        password = request.form['password']
+        cryptpassword = crypt.crypt(password,crypt.METHOD_CRYPT)
+        pwquestion = request.form['pwquestion']
+        pwanswer = request.form['pwanswer']
+        cryptpwanswer = crypt.crypt(pwanswer,crypt.METHOD_CRYPT)
+        status = 0
+        errors = validate_input_schema_adduser.validate(request.form)
+        if errors:
+            return render_template('adduser.html',msg=str(errors),site=site,email=email,password=password,pwquestion=pwquestion,pwanswer=pwanswer,checkfield=checkfield)
+        if checkfield == hcheck:
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('''INSERT into user (site,status,password,email,pwquestion,pwanswer) VALUES (%s,%s,%s,%s,%s,%s)''', (site,status,cryptpassword,email,pwquestion,cryptpwanswer))
+            msg = 'Account hinzugefuegt'
+            return redirect(url_for('login',msg=msg))
+            #return render_template('adduser.html',msg=msg)
+        else:
+            msg = "checkfield was wrong"
+            return render_template('adduser.html',msg=msg,site=site,email=email,password=password,pwquestion=pwquestion,pwanswer=pwanswer,checkfield=checkfield)
+    else:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('''SELECT site FROM user ORDER by site desc limit 1''')
+        account = cursor.fetchone()
+        if account:
+            site = int(account['site']) + 1
+            return render_template('adduser.html',msg=msg,site=site,checkfield=checkfield)
+    return render_template('adduser.html',checkfield=checkfield)
+
+@app.route('/cgi-bin/pw_failed.cgi', methods=['GET', 'POST'])
+def pw_failed():
+    msg = ''
+    if request.method == 'POST' and 'site' in request.form:
+        errors = validate_input_schema_pw_failed.validate(request.form)
+        if errors:
+            return render_template('pw_failed.html',msg=str(errors))
+        site = request.form['site']
+        password = request.form['password']
+        cryptedpassword = crypt.crypt(password,crypt.METHOD_CRYPT)
+        pwquestion = request.form['pwquestion']
+        pwanswer = request.form['pwanswer']
+        cryptedpwanswer = crypt.crypt(pwanswer,crypt.METHOD_CRYPT)
+        status = 0
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM user WHERE site = %s ', (site,))
+        account = cursor.fetchone()
+        if account:
+            session['loggedin'] = True
+            clearpwquestion  = account['pwquestion']
+            cryptedpwanswer = account['pwanswer']
+
+            if compare_hash(crypt.crypt(pwanswer, cryptedpwanswer), cryptedpwanswer):
+                msg = 'Passwortantwort war richtig'
+                if clearpwquestion == pwquestion:
+                    msg = msg + ' + Passwortfrage war richtig'
+                    cursor.execute('UPDATE user SET failed = 0 WHERE site = %s',(site,))
+                    if password:
+                        cursor.execute('UPDATE user set password = %s WHERE site = %s',(cryptedpassword,site,))
+                        msg = msg + " + Passwort geaendert"
+                    else:
+                        cursor.execute('UPDATE user set pwquestion = %s, pwanswer = %s WHERE site = %s',(pwquestion, cryptedpwanswer,site,))
+                        msg = msg + " + Passwortfrage/antwort geaendert"
+                return render_template('pw_failed.html',msg=msg,site=site)
+            else:
+                msg = 'Passwortantwort war falsch'
+                return render_template('pw_failed.html',msg=msg,site=site)
+
+        msg = 'No account found!'
+        return render_template('pw_failed.html',msg=msg,site=site)
+    else:
+        return render_template('pw_failed.html')
+
 
 @app.route('/cgi-bin/group.cgi', methods=['GET', 'POST'])
 def group():
@@ -79,6 +227,9 @@ def conf():
             compression = request.form['compression']
             maxbatchsize = request.form['maxbatchsize']
             batchtime = request.form['batchtime']
+            errors = validate_input_schema_conf.validate(request.form)
+            if errors:
+                return render_template('conf.html',msg=str(errors),site=site,newsgroups=newsgroups,pathexcludes=pathexcludes,maxcross=maxcross,maxsize=maxsize,ownarticles=ownarticles,compression=compression,maxbatchsize=maxbatchsize,batchtime=batchtime,dc=dc)
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute('UPDATE conf SET newsgroups = %s , pathexcludes = %s, maxcross = %s, maxsize = %s, ownarticles = %s, compression = %s, maxbatchsize = %s, batchtime = %s WHERE site = %s ', (newsgroups,pathexcludes,maxcross,maxsize,ownarticles,compression,maxbatchsize,batchtime,site))
 
@@ -88,6 +239,7 @@ def conf():
                 cursor.execute('UPDATE transport SET status = 0 WHERE src = %s ', (userdomain[1],))
             cursor.execute('SELECT src,status FROM transport WHERE dst=%s', ("bsmtp:"+site,))
             mailtransportdata = cursor.fetchall()
+            msg = 'Daten aktualisiert'
             if mailtransportdata:
                 return render_template('conf.html', msg=msg,site=site,newsgroups=newsgroups,pathexcludes=pathexcludes,maxcross=maxcross,maxsize=maxsize,ownarticles=ownarticles,compression=compression,maxbatchsize=maxbatchsize,batchtime=batchtime,dc=dc,mailtransportdata=mailtransportdata)
         else:
@@ -108,8 +260,7 @@ def conf():
             mailtransportdata = cursor.fetchall()
             if mailtransportdata:
                 return render_template('conf.html', msg=msg,site=site,newsgroups=newsgroups,pathexcludes=pathexcludes,maxcross=maxcross,maxsize=maxsize,ownarticles=ownarticles,compression=compression,maxbatchsize=maxbatchsize,batchtime=batchtime,dc=dc,mailtransportdata=mailtransportdata)
-    else:
-        return redirect(url_for('login'))
+    return redirect(url_for('login'))
 
 @app.route('/cgi-bin/user.cgi', methods=['GET', 'POST'])
 def user():
@@ -139,8 +290,12 @@ def user():
             telefax = request.form['telefax']
             email = request.form['email']
             geburtstag = request.form['geburtstag']
+            errors = validate_input_schema_user.validate(request.form)
+            if errors:
+                return render_template('user.html',msg=str(errors),site=site,anrede=anrede,vorname=vorname,nachname=nachname,strasse1=strasse1,strasse2=strasse2,land=land,plz=plz,ort=ort,telefon=telefon,telefax=telefax,email=email,geburtstag=geburtstag,billingsum=billingsum)
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute('UPDATE user SET anrede = %s , vorname = %s, nachname = %s, strasse1 = %s, strasse2 = %s, land = %s, plz = %s, ort = %s, telefon = %s, telefax = %s, email = %s, geburtstag = %s WHERE site = %s ', (anrede,vorname,nachname,strasse1,strasse2,land,plz,ort,telefon,telefax,email,geburtstag,site))
+            msg = 'Account aktualisiert'
             return render_template('user.html', msg=msg,site=site,anrede=anrede,vorname=vorname,nachname=nachname,strasse1=strasse1,strasse2=strasse2,land=land,plz=plz,ort=ort,telefon=telefon,telefax=telefax,email=email,geburtstag=geburtstag,billingsum=billingsum)
         else:
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -168,12 +323,15 @@ def login():
     msg = ''
     # Check if "username" and "password" POST requests exist (user submitted form)
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+        errors = validate_input_schema_login.validate(request.form)
+        if errors:
+            return render_template('index.html',msg=str(errors))
         # Create variables for easy access
         username = request.form['username']
         password = request.form['password']
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM user WHERE site = %s ', (username,))
+        cursor.execute('SELECT * FROM user WHERE failed < 6 AND site = %s ', (username,))
         # Fetch one record and return result
         account = cursor.fetchone()
         # If account exists in accounts table in out database
@@ -187,14 +345,17 @@ def login():
             if compare_hash(crypt.crypt(password, cryptedpasswd), cryptedpasswd):
                 session['gnuu'] = secrets.token_urlsafe(20)
                 cookie = session['gnuu']
-                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                cursor.execute('UPDATE user SET failed = 0 WHERE site = %s',(username,))
                 cursor.execute('REPLACE INTO sessions (id, site) VALUES (%s,%s)',(cookie, username,))
                 response = make_response(redirect(url_for('user')))
                 response.set_cookie("gnuu",cookie)
                 return response
+            else:
+                cursor.execute('UPDATE user set failed = failed + 1 WHERE site = %s',(username,))
+                msg = 'Passwort ist falsch!'
         else:
             # Account doesnt exist or username/password incorrect
-            msg = 'Incorrect username/password!'
+            msg = 'Falscher Username/Passwort!'
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg)
 
@@ -217,22 +378,6 @@ def logout():
 @app.route('/cgi-bin/index.html')
 def index():
     return redirect('/')
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    # Output message if something goes wrong...
-    msg = ''
-    # Check if "username", "password" and "email" POST requests exist (user submitted form)
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
-        # Create variables for easy access
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
-    elif request.method == 'POST':
-        # Form is empty... (no POST data)
-        msg = 'Please fill out the form!'
-    # Show registration form with message (if any)
-    return render_template('register.html', msg=msg)
 
 if __name__ == '__main__':
 

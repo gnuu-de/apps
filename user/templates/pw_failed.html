@@ -3,20 +3,20 @@
 		<td colspan="7">
 		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
 			<tr>
-				<td class="txtweiss15"><b>gnuu::login</b></td>
+				<td class="txtweiss15"><b>gnuu::recovery</b></td>
 			</tr>
 		</table>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="7">
-			<form action="/cgi-bin/login.cgi" method="POST">
+		<td colspan="7"> 
+			<form action="/cgi-bin/pw_failed.cgi" method="POST">
 
 			<table border=0>
 			<tr>
 				<td class="txtblack14">Sitename: </td>
 				<td class="txtblack14">
-					<input type="text" name="username" size="30" maxlenght="64">
+					<input type="text" name="site" size="30" maxlenght="64" value="{{ site }}">
 				</td>
 			</tr>
 			<tr>
@@ -26,15 +26,26 @@
 				</td>
 			</tr>
 			<tr>
+				<td class="txtblack14">Passwordquestion: </td>
 				<td class="txtblack14">
-					<input type="submit" value="Login" width="100">&nbsp;&nbsp;<br>
+					<input type="password" name="pwquestion" size="30" maxlenght="64">
 				</td>
 			</tr>
 			<tr>
-				<td>&nbsp;</td>
-				<td class="txtrot11">&nbsp;
-					<div>{{ msg }}</div>
+				<td class="txtblack14">Passwordanswer: </td>
+				<td class="txtblack14">
+					<input type="password" name="pwanswer" size="30" maxlenght="64">
 				</td>
+			</tr>
+			<tr>
+				<td class="txtblack14">
+					<input type="submit" value="Submit" width="100">&nbsp;&nbsp;<br>
+				</td>
+			</tr>
+			<tr>
+                                <td class="txtrot11">&nbsp;
+                                        <div>{{ msg }}</div>
+                                </td>
 			</tr>
 			</table>
 			</form>

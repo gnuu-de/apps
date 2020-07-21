@@ -1,0 +1,52 @@
+{% include 'header.html' %}
+	<tr>
+		<td colspan="7">
+		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+			<tr>
+				<td class="txtweiss15"><b>gnuu::adm::addbilling</b></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="7">
+			<form action="/adm/addbilling.cgi" method="POST">
+				<table border=0 width=600 cellspacing=1 cellpadding=2 class="bgdarkgray">
+					<tr class="bggray">
+						<td class="txt10">Site:</td>
+						<td class="txt10" colspan=2><input type="text" name="site" size="20" maxlenght="64" value="{{{  site }}"> </td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Euro:</td><td class="txt10" colspan=2><input type="text" name="euro" size="20" maxlenght="64" value="{{ euro }}"></td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Booktime:</td>
+						<td class="txt10" colspan=2><input type="text" name="booktime" size="20" maxlenght="64" value="{{ booktime }}"></td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10"><div class="msg">{{ msg }}</div></td>
+						<td><input type="hidden" name="select" value="uuserdata"></td>
+					<tr class="bggray">
+						<td><input type="hidden" name="site" value="{{ site }}"></td>
+						<td><input type="submit" value="Update" width=100><br>
+						<a href="/adm/logout.cgi"><font class="txtred8">[Logout]</font></a>
+						&nbsp;&nbsp;
+						</td>
+					</tr>
+			</table>
+			</form>
+
+		</td>
+	</tr>
+	<tr>
+		<td colspan=7>
+		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+			<tr>
+				<td class="txtweiss9">&copy; Frank Kl&ouml;ker &lt;eumel (at) admin.gnuu.de&gt;</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

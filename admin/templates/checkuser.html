@@ -3,14 +3,14 @@
 		<td colspan="7">
 		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
 			<tr>
-				<td class="txtweiss15"><b>gnuu::user</b></td>
+				<td class="txtweiss15"><b>gnuu::adm::checkuser</b></td>
 			</tr>
 		</table>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="7">
-			<form action="/cgi-bin/user.cgi" method="POST">
+			<form action="/adm/checkuser.cgi/{{ site }}" method="POST">
 				<table border=0 width=600 cellspacing=1 cellpadding=2 class="bgdarkgray">
 					<tr class="bggray">
 						<td class="txt11"><b> Site</b></td>
@@ -59,14 +59,19 @@
 						<td class="txt10">Geburtstag:</td><td class="txt10" colspan=2><input type="text" name="geburtstag" size="20" maxlenght="64" value="{{ geburtstag }}"></td>
 					</tr>
 					<tr class="bggray">
+						<td class="txt10">Failed Logins:</td><td class="txt10" colspan=2><input type="text" name="failed" size="20" maxlenght="64" value="{{ failed }}"></td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Status:</td><td class="txt10" colspan=2><input type="text" name="status" size="20" maxlenght="64" value="{{ status }}"></td>
+					</tr>
+					<tr class="bggray">
+						<td><input type="hidden" name="select" value="uuserdata"></td>
+						<td class="txt10">{{ msg }} </td>
+					<tr class="bggray">
 						<td><input type="hidden" name="site" value="{{ site }}"></td>
-                                		<td class="txtrot11">&nbsp;
-                                       			 <div>{{ msg }}</div>
-                                		</td>
 						<td><input type="submit" value="Update" width=100><br>
-						<a href="/cgi-bin/logout.cgi"><font class="txtred8">[Logout]</font></a>
+						<a href="/adm/logout.cgi"><font class="txtred8">[Logout]</font></a>
 						&nbsp;&nbsp;
-						<a href="/cgi-bin/group.cgi" target=_self><font class="txt8">Members</font></a>
 						</td>
 					</tr>
 			</table>
