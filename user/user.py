@@ -33,28 +33,28 @@ mysql = MySQL(app)
 
 
 class ValidateInputSchemaPwfailed(Schema):
-    site = fields.Str(required=True, validate=Length(max=13))
-    password = fields.Str(required=False, validate=Length(max=64))
-    pwquestion = fields.Str(required=True, validate=Length(max=64))
-    pwanswer = fields.Str(required=True, validate=Length(max=64))
+    site = fields.Str(required=True, validate=Length(min=13,max=13))
+    password = fields.Str(required=False, validate=Length(min=8,max=64))
+    pwquestion = fields.Str(required=True, validate=Length(min=1,max=64))
+    pwanswer = fields.Str(required=True, validate=Length(min=1,max=64))
 
 class ValidateInputSchemaAdduser(Schema):
     site = fields.Str(required=True, validate=Length(max=13))
-    password = fields.Str(required=True, validate=Length(max=64))
-    email = fields.Email(required=True, validate=Length(max=128))
-    pwquestion = fields.Str(required=True, validate=Length(max=255))
-    pwanswer = fields.Str(required=True, validate=Length(max=255))
-    checkfield = fields.Str(required=True, validate=Length(max=6))
-    hcheck = fields.Str(required=True, validate=Length(max=6))
+    password = fields.Str(required=True, validate=Length(min=8,max=64))
+    email = fields.Email(required=True, validate=Length(min=4,max=128))
+    pwquestion = fields.Str(required=True, validate=Length(min=1,max=255))
+    pwanswer = fields.Str(required=True, validate=Length(min=1,max=255))
+    checkfield = fields.Str(required=True, validate=Length(min=6,max=6))
+    hcheck = fields.Str(required=True, validate=Length(min=6,max=6))
 
 class ValidateInputSchemaConf(Schema):
-    site = fields.Str(required=True, validate=Length(max=13))
+    site = fields.Str(required=True, validate=Length(min=13,max=13))
     newsgroups = fields.Str(required=True)
     pathexcludes = fields.Str(required=False, validate=Length(max=64))
     maxcross = fields.Int(required=True, validate=Range(min=0,max=99))
     maxsize = fields.Int(required=True, validate=Range(min=5000,max=1000000))
     ownarticles = fields.Int(required=False, validate=Range(min=0,max=1))
-    compression = fields.Str(required=True, validate=Length(max=64))
+    compression = fields.Str(required=True, validate=Length(min=3,max=64))
     maxbatchsize = fields.Int(required=True, validate=Range(min=0,max=1000000))
     batchtime = fields.Int(required=True, validate=Range(min=300,max=86400))
     subdomain1 = fields.Str(required=False)
@@ -69,7 +69,7 @@ class ValidateInputSchemaConf(Schema):
     subdomain10 = fields.Str(required=False)
 
 class ValidateInputSchemaUser(Schema):
-    site = fields.Str(required=True, validate=Length(max=13))
+    site = fields.Str(required=True, validate=Length(min=13,max=13))
     anrede = fields.Str(required=True, validate=Length(max=10))
     vorname = fields.Str(required=True, validate=Length(max=64))
     nachname = fields.Str(required=True, validate=Length(max=64))
