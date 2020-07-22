@@ -117,7 +117,7 @@ def adduser():
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute('''INSERT into user (site,status,password,email,pwquestion,pwanswer) VALUES (%s,%s,%s,%s,%s,%s)''', (site,status,cryptpassword,email,pwquestion,cryptpwanswer))
             msg = 'Account hinzugefuegt'
-            return redirect(url_for('login',msg=msg))
+            return render_template('index.html',msg=msg)
             #return render_template('adduser.html',msg=msg)
         else:
             msg = "checkfield was wrong"
