@@ -40,8 +40,8 @@ class ValidateInputSchemaPwfailed(Schema):
 
 class ValidateInputSchemaAdduser(Schema):
     site = fields.Str(required=True, validate=Length(max=13))
-    password = fields.Str(required=False, validate=Length(max=64))
-    email = fields.Email(required=False, validate=Length(max=64))
+    password = fields.Str(required=True, validate=Length(max=64))
+    email = fields.Email(required=True, validate=Length(max=128))
     pwquestion = fields.Str(required=True, validate=Length(max=255))
     pwanswer = fields.Str(required=True, validate=Length(max=255))
     checkfield = fields.Str(required=True, validate=Length(max=6))
