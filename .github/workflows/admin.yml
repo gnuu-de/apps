@@ -6,20 +6,19 @@ name: deploy admin
 jobs:
   deploy:
     name: deploy to cluster
-    runs-on: self-hosted
-    #    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
         ref: master
     - name: deploy to cluster
-      uses: steebchen/kubectl@master
+      uses: gnuu-de/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
         args: rollout restart deployment/adm
     - name: verify deployment
-      uses: steebchen/kubectl@master
+      uses: gnuu-de/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
