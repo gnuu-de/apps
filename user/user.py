@@ -318,8 +318,7 @@ def user():
                 email = account['email']
                 geburtstag = account['geburtstag']
         return render_template('user.html', msg=msg,site=site,anrede=anrede,vorname=vorname,nachname=nachname,strasse1=strasse1,strasse2=strasse2,land=land,plz=plz,ort=ort,telefon=telefon,telefax=telefax,email=email,geburtstag=geburtstag,billingsum=billingsum)
-    else:
-        return redirect(url_for('login'))
+    return redirect(url_for('login'))
 
 @app.route('/cgi-bin/login.cgi', methods=['GET', 'POST'])
 def login():
