@@ -202,6 +202,9 @@ def billing():
         billingdata = cursor.fetchall()
         if billingdata:
             return render_template('billing.html', site=site, billingdata=billingdata)
+    msg = 'Keine Rechnungsdaten'
+    return render_template('billing.html', msg=msg)
+
 
 
 @app.route('/cgi-bin/conf.cgi', methods=['GET', 'POST'])
