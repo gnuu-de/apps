@@ -1,0 +1,25 @@
+on: 
+  push: 
+    paths: 
+    - 'api/**'
+name: deploy user
+jobs:
+  deploy:
+    name: deploy to cluster
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: master
+    - name: deploy to cluster
+      uses: gnuu-de/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: rollout restart deployment/api
+    - name: verify deployment
+      uses: gnuu-de/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: get pods -l app=api
