@@ -2,22 +2,22 @@ on:
   push: 
     paths: 
     - 'api/**'
-name: deploy user
+name: Deploy user
 jobs:
   deploy:
-    name: deploy to cluster
+    name: Deploy to cluster
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
         ref: master
-    - name: deploy to cluster
+    - name: Deploy to cluster
       uses: gnuu-de/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
         args: rollout restart deployment/api
-    - name: verify deployment
+    - name: Verify deployment
       uses: gnuu-de/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
