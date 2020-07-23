@@ -8,7 +8,9 @@ jobs:
     name: deploy to cluster
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
+      with:
+        ref: master
     - name: deploy to cluster
       uses: steebchen/kubectl@master
       env:
