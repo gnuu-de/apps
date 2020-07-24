@@ -109,7 +109,7 @@ def newsfeeds():
         if defaultnewsfeed:
             fp.write(defaultnewsfeed)
         fp.close()
-        fp = open('newsfeeds','wb+')
+        fp = open('newsfeeds','w+')
         fp.write("# user newsfeeds\n")
         for row in newsfeeds:
             site = row['site']
