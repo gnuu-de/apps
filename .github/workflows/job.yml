@@ -1,8 +1,8 @@
 on: 
   push: 
     paths: 
-    - 'job/**'
-name: Deploy job
+    - 'jobs/**'
+name: Deploy jobs
 jobs:
   deploy:
     name: Deploy to cluster
