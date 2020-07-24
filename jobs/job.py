@@ -25,7 +25,6 @@ app.config['MYSQL_USER'] = mysql_user
 app.config['MYSQL_PASSWORD'] = mysql_password
 app.config['MYSQL_DB'] = mysql_db
 
-# Intialize MySQL
 mysql = MySQL(app)
 
 @app.route('/update/uucp/passwd', methods=['GET', 'POST'])
