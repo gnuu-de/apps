@@ -109,7 +109,7 @@ def newsfeeds():
         if defaultnewsfeed:
             fp.write(defaultnewsfeed)
         fp.close()
-        fp = open('newsfeeds','w')
+        fp = open('newsfeeds','w+')
         fp.write("# user newsfeeds\n")
         for row in newsfeeds:
             site = row['site']
@@ -122,10 +122,10 @@ def newsfeeds():
                 ownarticles = ",Ap"
             fp.write("#\n")
             if pathexcludes:
-                fp.write("%s/%s\\n" % (str(site),str(pathexcludes)))
+                fp.write("%s/%s\\\n" % (str(site),str(pathexcludes)))
             else:
-                fp.write("%s/\\n" % (str(site)))
-            fp.write(":%s\\n" % (str(newsgroups)))
+                fp.write("%s/\\\n" % (str(site)))
+            fp.write(":%s\\\n" % (str(newsgroups)))
             fp.write(":Tf,Wnb,B4096/1024,G%s,<%s%s:%s\n" % (str(maxcross),str(maxsize),str(ownarticles),str(site)))
             fp.write("#\n")
         fp.close()
