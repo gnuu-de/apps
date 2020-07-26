@@ -8,6 +8,7 @@ from os import environ
 import secrets
 import random
 import string
+import requests
 from marshmallow import Schema, fields
 from marshmallow.validate import Length, Range
 from flask_mail import Mail, Message
