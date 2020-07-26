@@ -33,10 +33,8 @@ app.config['MAIL_SERVER']='mail'
 app.config['MAIL_PORT'] = 25
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = False
+
 mail = Mail(app)
-
-
-# Intialize MySQL
 mysql = MySQL(app)
 
 class ValidateInputSchemaEmail(Schema):
@@ -45,7 +43,6 @@ class ValidateInputSchemaEmail(Schema):
     body = fields.Str(required=True, validate=Length(min=1,max=2000))
     checkfield = fields.Str(required=True, validate=Length(max=6))
     hcheck = fields.Str(required=True, validate=Length(max=6))
-
 
 class ValidateInputSchemaPwfailed(Schema):
     site = fields.Str(required=True, validate=Length(min=13,max=13))
@@ -102,13 +99,13 @@ class ValidateInputSchemaLogin(Schema):
     username = fields.Str(required=True, validate=Length(max=13))
     password = fields.Str(required=False, validate=Length(max=64))
 
-
 validate_input_schema_email = ValidateInputSchemaEmail()
 validate_input_schema_pw_failed = ValidateInputSchemaPwfailed()
 validate_input_schema_adduser = ValidateInputSchemaAdduser()
 validate_input_schema_conf = ValidateInputSchemaConf()
 validate_input_schema_user = ValidateInputSchemaUser()
 validate_input_schema_login = ValidateInputSchemaLogin()
+
 
 @app.route('/cgi-bin/email.cgi', methods=['GET', 'POST'])
 def email():
@@ -426,6 +423,14 @@ def logout():
 @app.route('/cgi-bin/index.html')
 def index():
     return redirect('/')
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('500.html'), 500
 
 if __name__ == '__main__':
 
