@@ -10,6 +10,7 @@ import random
 import string
 from marshmallow import Schema, fields
 from marshmallow.validate import Length, Range
+from flask_mail import Mail, Message
 
 
 mysql_host = environ.get('mysql_host','localhost')
@@ -28,8 +29,22 @@ app.config['MYSQL_USER'] = mysql_user
 app.config['MYSQL_PASSWORD'] = mysql_password
 app.config['MYSQL_DB'] = mysql_db
 
+app.config['MAIL_SERVER']='mail'
+app.config['MAIL_PORT'] = 25
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = False
+mail = Mail(app)
+
+
 # Intialize MySQL
 mysql = MySQL(app)
+
+class ValidateInputSchemaEmail(Schema):
+    email = fields.Email(required=False, validate=Length(max=64))
+    subject = fields.Str(required=True, validate=Length(min=1,max=255))
+    body = fields.Str(required=True, validate=Length(min=1,max=2000))
+    checkfield = fields.Str(required=True, validate=Length(max=6))
+    hcheck = fields.Str(required=True, validate=Length(max=6))
 
 
 class ValidateInputSchemaPwfailed(Schema):
@@ -88,11 +103,42 @@ class ValidateInputSchemaLogin(Schema):
     password = fields.Str(required=False, validate=Length(max=64))
 
 
+validate_input_schema_email = ValidateInputSchemaEmail()
 validate_input_schema_pw_failed = ValidateInputSchemaPwfailed()
 validate_input_schema_adduser = ValidateInputSchemaAdduser()
 validate_input_schema_conf = ValidateInputSchemaConf()
 validate_input_schema_user = ValidateInputSchemaUser()
 validate_input_schema_login = ValidateInputSchemaLogin()
+
+@app.route('/cgi-bin/email.cgi', methods=['GET', 'POST'])
+def email():
+    msg = ''
+    letters = string.ascii_lowercase
+    checkfield = ''.join(random.sample(letters, 5))
+    if request.method == 'POST' and 'email' in request.form:
+        checkfield = request.form['checkfield']
+        hcheck = request.form['hcheck']
+        email = request.form['email']
+        subject = request.form['subject']
+        body = request.form['body']
+        errors = validate_input_schema_email.validate(request.form)
+        if errors:
+            return render_template('mail.html',msg=str(errors),email=email,subject=subject,body=body,checkfield=checkfield)
+        if checkfield == hcheck:
+            webmsg = Message(subject, sender = 'flaskmail@admin.gnuu.de', recipients = ['flaskmail@admin.gnuu.de'])
+            webmsg.body = email + body
+            mail.send(webmsg)
+
+            msg = 'Nachricht gesendet'
+            return render_template('mail.html',msg=msg)
+        else:
+            msg = "checkfield was wrong"
+            return render_template('mail.html',msg=msg,email=email,subject=subject,body=body,checkfield=checkfield)
+    else:
+        return render_template('mail.html',checkfield=checkfield)
+
+    return render_template('mail.html',checkfield=checkfield)
+
 
 @app.route('/cgi-bin/adduser.cgi', methods=['GET', 'POST'])
 def adduser():

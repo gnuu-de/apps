@@ -1,0 +1,68 @@
+{% include 'header.html' %}
+        <tr>
+                <td colspan="7">
+                <table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+                        <tr>
+                                <td class="txtweiss15"><b>gnuu::contact</b></td>
+                        </tr>
+                </table>
+                </td>
+        </tr>
+        <tr>
+                <td colspan="7">
+                        <form action="/cgi-bin/email.cgi" method="POST">
+                                <table border=0 width=600 cellspacing=1 cellpadding=2 class="bgdarkgray">
+                                        <tr class="bggray">
+                                                <td class="txtblack14">Email-Adresse: </td>
+                                                <td class="txtblack14">
+                                                        <input type="text" name="email" size="32" maxlenght="64" value="{{ email }}">
+                                                </td>
+                                        </tr>
+                                        <tr class="bggray">
+                                                <td class="txtblack14">Subject: </td>
+                                                <td class="txtblack14">
+                                                        <input type="text" name="subject" size="64" maxlenght="255" value="{{ subjectl }}">
+                                                </td>
+                                        </tr>
+                                        <tr class="bggray">
+                                                <td class="txt10">Nachricht:</td>
+                                                <td class="txt10" colspan=2>
+                                                        <textarea name="body" rows=4 cols=100 wrap=virtual>{{ body }}</textarea>
+                                                </td>
+                                        </tr>
+                                        <tr class="bggray">
+                                                <td class="txt10">Checkfield:</td>
+                                                <td class="txt10" colspan=2><input type="text" name="hcheck" size="20" maxlenght="64" value="{{ hcheck }}"></td>
+                                        </tr>
+                                        <tr class="bggray">
+                                                <td class="txtrot11">&nbsp;
+                                                        <div class="msg">Checkfield: {{ checkfield }}</div>
+                                                </td>
+                                                <td class="txtrot11">&nbsp;
+                                                        <div>{{ msg }}</div>
+                                                </td>
+                                        </tr>
+                                        <tr class="bggray">
+                                                <td><input type="hidden" name="checkfield" value="{{ checkfield }}"></td>
+                                                <td><input type="submit" value="Senden" width=100><br>
+                                                &nbsp;&nbsp;
+                                                </td>
+                                        </tr>
+                        </table>
+                        </form>
+
+                </td>
+        </tr>
+        <tr>
+                <td colspan=7>
+                <table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+                        <tr>
+                                <td class="txtweiss9">&copy; Frank Kl&ouml;ker &lt;eumel (at) admin.gnuu.de&gt;</td>
+                        </tr>
+                </table>
+                </td>
+        </tr>
+</table>
+</body>
+</html>
+
