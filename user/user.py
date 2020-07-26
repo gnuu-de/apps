@@ -122,7 +122,7 @@ def email():
         if errors:
             return render_template('mail.html',msg=str(errors),email=email,subject=subject,body=body,checkfield=checkfield)
         if checkfield == hcheck:
-            webmsg = Message(subject, sender = 'flaskmail@admin.gnuu.de', recipients = ['flaskmail@admin.gnuu.de'])
+            webmsg = Message(subject, sender = 'flaskmail@eutest.gnuu.de', recipients = ['flaskmail@eutest.gnuu.de'])
             webmsg.body = email + body
             mail.send(webmsg)
 
