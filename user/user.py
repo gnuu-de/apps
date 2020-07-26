@@ -287,8 +287,7 @@ def conf():
             cursor.execute('SELECT src,status FROM transport WHERE dst=%s', ("bsmtp:"+site,))
             mailtransportdata = cursor.fetchall()
             jobapi = requests.get("http://job/update/configmaps")
-            jobmsg = jobapi.json()
-            msg = 'Daten aktualisiert: %s' % (jobmsg)
+            msg = 'Daten aktualisiert: %s' % jobapi.text
             if mailtransportdata:
                 return render_template('conf.html', msg=msg,site=site,newsgroups=newsgroups,pathexcludes=pathexcludes,maxcross=maxcross,maxsize=maxsize,ownarticles=ownarticles,compression=compression,maxbatchsize=maxbatchsize,batchtime=batchtime,dc=dc,mailtransportdata=mailtransportdata)
         else:
