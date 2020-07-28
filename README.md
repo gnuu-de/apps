@@ -26,6 +26,7 @@ Job API for config update
 * /update/news/uucp - update uucp batcher
 
 * /update/configmaps - call all functions and write configmaps to K8s
+* /reload/newsconf - executes a `ctlinnd reload all konfigs` on the news server
 
 
 api

@@ -173,6 +173,16 @@ def newsuucp():
     resp = jsonify(success=True)
     return resp
 
+@app.route('/reload/newsconf', methods=['GET', 'POST'])
+def reloadnewsconf():
+    reload_newsconf = "kubectl exec news-0 --container news -- /usr/lib/news/bin/ctlinnd reload all konfigs"
+    try:
+        result_newsconf = subprocess.check_output(
+            [reload_newsconf], shell=True)
+    except subprocess.CalledProcessError as e:
+        return "An error occurred while trying to fetch task status updates."
+    return 'News %s' % (result_newsconf)
+
 @app.route('/update/configmaps', methods=['GET', 'POST'])
 def configmaps():
     uucpconfig()
