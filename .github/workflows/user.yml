@@ -22,4 +22,4 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: get pods -l app=usr
+        args: rollout status deployment/usr
