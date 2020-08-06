@@ -90,7 +90,7 @@ def uucpsys():
                 fp.write("called-chat-program /usr/sbin/batcher s-rcsmtp %s\n" % (str(row["site"])))
             else:
                 fp.write("called-chat-program /usr/sbin/batcher c-rcsmtp %s\n" % (str(row["site"])))
-            fp.write("commands srnews rmail rsmtp rbsmtp rcsmtp rgsmtp rssmtp\n")
+            fp.write("commands rnews rmail rsmtp rbsmtp rcsmtp rgsmtp rssmtp\n")
             fp.write("command-path /usr/lib/news/bin /usr/local/bin /usr/bin /usr/local/lib/uucp/\n")
         fp.close()
     resp = jsonify(success=True)
