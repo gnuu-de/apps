@@ -1,19 +1,7 @@
-from flask import Flask, redirect, url_for, request, jsonify, Response
-from flask_prometheus import monitor
+from flask import Flask, request
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
-import urllib.request
 from os import environ
-import prometheus_client as prom
-import random
-import time
-from threading import Thread
-
-req_summary = prom.Summary('python_my_req_example', 'Time spent processing a request')
-
-@req_summary.time()
-def process_request(t):
-    time.sleep(t)
 
 mysql_host = environ.get('mysql_host','localhost')
 mysql_port = environ.get('mysql_port',3306)
@@ -35,39 +23,31 @@ mysql = MySQL(app)
 
 @app.route('/metrics', methods=['GET', 'POST'])
 def metrics():
-    res = []
     counter = ""
-    #counter = prom.Counter('python_my_counter', 'This is my counter')
-    #gauge = prom.Gauge('python_my_gauge', 'This is my gauge')
-    #histogram = prom.Histogram('python_my_histogram', 'This is my histogram')
-    #summary = prom.Summary('python_my_summary', 'This is my summary')
 
-    #while True:
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('select count(*) as repomirror from repomirrorconfig where is_enabled = 1')
     result = cursor.fetchone()
     if result:
-        counter = str(result['repomirror'])
-        #counter.inc = str(result['repomirror'])
-        #counter.inc(random.random())
-        #gauge.set(random.random() * 15 - 5)
-        #histogram.observe(random.random() * 10)
-        #summary.observe(random.random() * 10)
-        #process_request(random.random() * 5)
-        #res.append(prom.generate_latest(counter.inc))
-        return Response("python_my_counter " + counter + "\n", mimetype="text/plain")
-
-    #    time.sleep(60)
-
-    return "Bad Request", 400, None
-#Thread(target=thr).start()
-
-#monitor(app, port=9091)
+        counter = "python_quay_repomirror_count " + str(result['repomirror']) + "\n"
+    cursor.execute('select count(*) as image from image')
+    result = cursor.fetchone()
+    if result:
+        counter += "python_quay_image_count " + str(result['image']) + "\n"
+    cursor.execute('select count(*) as repository from repository')
+    result = cursor.fetchone()
+    if result:
+        counter += "python_quay_repository_count " + str(result['repository']) + "\n"
+    cursor.execute('select sum(image_size)/1024/1024/1024 as storage_size_gb from imagestorage;')
+    result = cursor.fetchone()
+    if result:
+        counter += "python_quay_storage_size_gb " + str(result['storage_size_gb']) + "\n"
+    return counter, 200, {'Content-Type': 'text/plain'}
 
 if __name__ == '__main__':
 
   app.run(
     host = "0.0.0.0",
     port = 9091,
-    debug = 1
+    debug = 0
   )
