@@ -62,14 +62,14 @@ def thr():
 
         time.sleep(60)
 
-Thread(target=thr).start()
+#Thread(target=thr).start()
 
-monitor(app, port=8080)
+#monitor(app, port=8080)
 
-#if __name__ == '__main__':
-#
-#  app.run(
-#    host = "0.0.0.0",
-#    port = 8080,
-#    debug = 1
-#  )
+if __name__ == '__main__':
+
+  app.run(
+    host = "0.0.0.0",
+    port = 8080,
+    debug = 1
+  )
