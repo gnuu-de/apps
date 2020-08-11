@@ -34,7 +34,7 @@ app.config['MYSQL_DB'] = mysql_db
 mysql = MySQL(app)
 
 @app.route('/metrics', methods=['GET', 'POST'])
-def thr():
+def metrics():
 
     counter = prom.Counter('python_my_counter', 'This is my counter')
     #gauge = prom.Gauge('python_my_gauge', 'This is my gauge')
@@ -52,18 +52,20 @@ def thr():
         #histogram.observe(random.random() * 10)
         #summary.observe(random.random() * 10)
         #process_request(random.random() * 5)
+        res.append(prom.generate_latest(counter.inc))
+        return Response(res, mimetype="text/plain")
 
     #    time.sleep(60)
 
     return "Bad Request", 400, None
 #Thread(target=thr).start()
 
-#monitor(app, port=8080)
+monitor(app, port=9091)
 
-if __name__ == '__main__':
-
-  app.run(
-    host = "0.0.0.0",
-    port = 9091,
-    debug = 1
-  )
+#if __name__ == '__main__':
+#
+#  app.run(
+#    host = "0.0.0.0",
+#    port = 9091,
+#    debug = 1
+#  )
