@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, request, jsonify
+from flask import Flask, redirect, url_for, request, jsonify, Response
 from flask_prometheus import monitor
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
@@ -36,7 +36,8 @@ mysql = MySQL(app)
 @app.route('/metrics', methods=['GET', 'POST'])
 def metrics():
     res = []
-    counter = prom.Counter('python_my_counter', 'This is my counter')
+    counter = ""
+    #counter = prom.Counter('python_my_counter', 'This is my counter')
     #gauge = prom.Gauge('python_my_gauge', 'This is my gauge')
     #histogram = prom.Histogram('python_my_histogram', 'This is my histogram')
     #summary = prom.Summary('python_my_summary', 'This is my summary')
@@ -46,14 +47,15 @@ def metrics():
     cursor.execute('select count(*) as repomirror from repomirrorconfig where is_enabled = 1')
     result = cursor.fetchone()
     if result:
-        counter.inc = str(result['repomirror'])
+        counter = str(result['repomirror'])
+        #counter.inc = str(result['repomirror'])
         #counter.inc(random.random())
         #gauge.set(random.random() * 15 - 5)
         #histogram.observe(random.random() * 10)
         #summary.observe(random.random() * 10)
         #process_request(random.random() * 5)
-        res.append(prom.generate_latest(counter.inc))
-        return Response(res, mimetype="text/plain")
+        #res.append(prom.generate_latest(counter.inc))
+	return Response("python_my_counter " + counter, mimetype="text/plain")
 
     #    time.sleep(60)
 
