@@ -33,21 +33,14 @@ app.config['MYSQL_DB'] = mysql_db
 
 mysql = MySQL(app)
 
-@app.route('/', methods=['GET', 'POST'])
-def hi():
-    if request.method == "GET":
-        return "OK", 200, None
-
-    return "Bad Request", 400, None
-
-
-counter = prom.Counter('python_my_counter', 'This is my counter')
-#gauge = prom.Gauge('python_my_gauge', 'This is my gauge')
-#histogram = prom.Histogram('python_my_histogram', 'This is my histogram')
-#summary = prom.Summary('python_my_summary', 'This is my summary')
-
-
+@app.route('/metrics', methods=['GET', 'POST'])
 def thr():
+
+    counter = prom.Counter('python_my_counter', 'This is my counter')
+    #gauge = prom.Gauge('python_my_gauge', 'This is my gauge')
+    #histogram = prom.Histogram('python_my_histogram', 'This is my histogram')
+    #summary = prom.Summary('python_my_summary', 'This is my summary')
+
     while True:
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('select count(*) as repomirror from repomirrorconfig where is_enabled = 1')
@@ -62,14 +55,15 @@ def thr():
 
         time.sleep(60)
 
-Thread(target=thr).start()
+    return "Bad Request", 400, None
+#Thread(target=thr).start()
 
-monitor(app, port=8080)
+#monitor(app, port=8080)
 
-#if __name__ == '__main__':
-#
-#  app.run(
-#    host = "0.0.0.0",
-#    port = 8080,
-#    debug = 1
-#  )
+if __name__ == '__main__':
+
+  app.run(
+    host = "0.0.0.0",
+    port = 9091,
+    debug = 1
+  )
