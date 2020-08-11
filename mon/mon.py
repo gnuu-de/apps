@@ -41,19 +41,19 @@ def thr():
     #histogram = prom.Histogram('python_my_histogram', 'This is my histogram')
     #summary = prom.Summary('python_my_summary', 'This is my summary')
 
-    while True:
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('select count(*) as repomirror from repomirrorconfig where is_enabled = 1')
-        result = cursor.fetchone()
-        if result:
-            counter.inc = str(result['repomirror'])
+    #while True:
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('select count(*) as repomirror from repomirrorconfig where is_enabled = 1')
+    result = cursor.fetchone()
+    if result:
+        counter.inc = str(result['repomirror'])
         #counter.inc(random.random())
         #gauge.set(random.random() * 15 - 5)
         #histogram.observe(random.random() * 10)
         #summary.observe(random.random() * 10)
         #process_request(random.random() * 5)
 
-        time.sleep(60)
+    #    time.sleep(60)
 
     return "Bad Request", 400, None
 #Thread(target=thr).start()
