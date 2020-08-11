@@ -55,7 +55,7 @@ def metrics():
         #summary.observe(random.random() * 10)
         #process_request(random.random() * 5)
         #res.append(prom.generate_latest(counter.inc))
-        return Response("python_my_counter " + counter, mimetype="text/plain")
+        return Response("python_my_counter " + counter + "\n", mimetype="text/plain")
 
     #    time.sleep(60)
 
