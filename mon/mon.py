@@ -60,12 +60,12 @@ def metrics():
     return "Bad Request", 400, None
 #Thread(target=thr).start()
 
-monitor(app, port=9091)
+#monitor(app, port=9091)
 
-#if __name__ == '__main__':
-#
-#  app.run(
-#    host = "0.0.0.0",
-#    port = 9091,
-#    debug = 1
-#  )
+if __name__ == '__main__':
+
+  app.run(
+    host = "0.0.0.0",
+    port = 9091,
+    debug = 1
+  )
