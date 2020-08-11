@@ -35,7 +35,7 @@ mysql = MySQL(app)
 
 @app.route('/metrics', methods=['GET', 'POST'])
 def metrics():
-
+    res = []
     counter = prom.Counter('python_my_counter', 'This is my counter')
     #gauge = prom.Gauge('python_my_gauge', 'This is my gauge')
     #histogram = prom.Histogram('python_my_histogram', 'This is my histogram')
