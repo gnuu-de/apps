@@ -65,7 +65,7 @@ class ValidateInputSchemaConf(Schema):
     pathexcludes = fields.Str(required=False, validate=Length(max=64))
     maxcross = fields.Int(required=True, validate=Range(min=0,max=99))
     maxsize = fields.Int(required=True, validate=Range(min=5000,max=1000000))
-    #ownarticles = fields.Int(required=False, validate=Range(min=0,max=1))
+    ownarticles = fields.Str(required=False)
     compression = fields.Str(required=True, validate=Length(min=3,max=64))
     maxbatchsize = fields.Int(required=True, validate=Range(min=0,max=1000000))
     batchtime = fields.Int(required=True, validate=Range(min=300,max=86400))
