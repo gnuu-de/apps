@@ -23,3 +23,7 @@ jobs:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
         args: rollout status deployment/usr
+    - name: Announce deployment
+      uses: wei/curl@v1
+      with:
+        args: -d '{"text":"New deployment user done", "key": ${{ secrets.MATRIX_KEY }},"room": "${{ secrets.MATRIX_ROOM }}"}' 'https://api.gnuu.de/matrixbot/'
