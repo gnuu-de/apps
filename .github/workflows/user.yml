@@ -2,6 +2,7 @@ on:
   push: 
     paths: 
     - 'user/**'
+    - '.github/workflows/user.yml'
 name: Deploy user
 jobs:
   deploy:
@@ -29,4 +30,4 @@ jobs:
         MATRIX_KEY: ${{ secrets.MATRIX_KEY }}
         MATRIX_ROOM: ${{ secrets.MATRIX_ROOM }}
       with:
-              args: -d '{"text":"New deployment user done", "key":\"${MATRIX_KEY}\", "room":\"${MATRIX_ROOM}\"}' http://uucp.gnuu.de:5000/matrixbot/
+              args: -d '{"text":"New deployment user done", "key":'\"${MATRIX_KEY}\"', "room":'\"${MATRIX_ROOM}\"'}' http://uucp.gnuu.de:5000/matrixbot/
