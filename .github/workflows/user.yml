@@ -12,23 +12,22 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: master
-#    - name: Deploy to cluster
-#      uses: gnuu-de/kubectl@master
-#      env:
-#        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-#      with:
-#        args: rollout restart deployment/usr
-#    - name: Verify deployment
-#      uses: gnuu-de/kubectl@master
-#      env:
-#        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-#      with:
-#        args: rollout status deployment/usr
+    - name: Deploy to cluster
+      uses: gnuu-de/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: rollout restart deployment/usr
+    - name: Verify deployment
+      uses: gnuu-de/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: rollout status deployment/usr
     - name: Announce deployment
       uses: wei/curl@v1
       env:
         MATRIX_KEY: ${{ secrets.MATRIX_KEY }}
         MATRIX_ROOM: ${{ secrets.MATRIX_ROOM }}
       with:
-              #args: -d '{"text":"New deployment user done", "key":'\"${MATRIX_KEY}\"', "room":'\"${MATRIX_ROOM}\"'}' https://api.gnuu.de/matrixbot/
-              args: -d '{\"text\":\"New deployment user done\", \"key\":\"'${MATRIX_KEY}'\", \"room\":\"'${MATRIX_ROOM}'\"}' http://uucp.gnuu.de:5000/matrixbot/
+              args: -d '{\"text\":\"New deployment user done\", \"key\":\"'${MATRIX_KEY}'\", \"room\":\"'${MATRIX_ROOM}'\"}' https://api.gnuu.de/matrixbot/
