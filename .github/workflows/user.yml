@@ -26,4 +26,4 @@ jobs:
     - name: Announce deployment
       uses: wei/curl@v1
       with:
-        args: -d '{"text":"New deployment user done", "key": ${{ secrets.MATRIX_KEY }},"room": "${{ secrets.MATRIX_ROOM }}"}' 'https://api.gnuu.de/matrixbot/'
+        args: -d '{"text":"New deployment user done", "key": "${{ secrets.MATRIX_KEY }}", "room": "${{ secrets.MATRIX_ROOM }}"}' 'https://api.gnuu.de/matrixbot/'
