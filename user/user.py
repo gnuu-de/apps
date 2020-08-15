@@ -13,6 +13,7 @@ from marshmallow import Schema, fields
 from marshmallow.validate import Length, Range
 from flask_mail import Mail, Message
 
+
 mysql_host = environ.get('mysql_host','localhost')
 mysql_port = environ.get('mysql_port',3306)
 mysql_user = environ.get('mysql_user')
