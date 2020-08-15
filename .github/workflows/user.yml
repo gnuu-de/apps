@@ -31,4 +31,4 @@ jobs:
         MATRIX_ROOM: ${{ secrets.MATRIX_ROOM }}
       with:
               #args: -d '{"text":"New deployment user done", "key":'\"${MATRIX_KEY}\"', "room":'\"${MATRIX_ROOM}\"'}' https://api.gnuu.de/matrixbot/
-              args: -d \'{\"text\":\"New deployment user done\", \"key\":\'\"${MATRIX_KEY}\"\', \"room\":'\"${MATRIX_ROOM}\"\'}\' http://uucp.gnuu.de:5000/matrixbot/
+              args: -d '{\"text\":\"New deployment user done\", \"key\":\'\"${MATRIX_KEY}\"\', \"room\":'\"${MATRIX_ROOM}\"\'}' http://uucp.gnuu.de:5000/matrixbot/
