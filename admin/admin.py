@@ -47,7 +47,7 @@ def checkbilling(tset):
             abort(400)
 
 
-@app.route('/adm/checkconf.cgi', methods=['GET', 'POST'])
+@app.route('/adm/checkconf.cgi', methods=['GET', 'POST'], defaults={"user": "0"})
 @app.route('/adm/checkconf.cgi/<user>', methods=['GET', 'POST'])
 def checkconf(user):
     msg = ''
