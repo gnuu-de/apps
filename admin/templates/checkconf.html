@@ -1,0 +1,156 @@
+{% include 'header.html' %}
+	<tr>
+		<td colspan="7">
+		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+			<tr>
+				<td class="txtweiss15"><b>gnuu::adm::conf</b></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="7">
+			<form action="/adm/checkconf.cgi/{{ site }}" method="POST">
+				<table border=0 width=600 cellspacing=1 cellpadding=2 class="bgdarkgray">
+					<tr class="bggray">
+						<td class="txt11"><b> Site</b></td>
+						<td class="txtblue11" colspan=2><b>{{ site }}</b></td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Newsgroups:</td>
+						<td class="txt10" colspan=2>
+							<textarea name="newsgroups" rows=4 cols=100 wrap=virtual>{{ newsgroups }}</textarea>
+						</td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Pathexcludes:</td>
+						<td class="txt10" colspan=2>
+							<textarea name="pathexcludes" rows=4 cols=100 wrap=virtual>{{ pathexcludes }}</textarea>
+						</td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Maxcross:</td>
+						<td class="txt10" colspan=2>
+							<select name="maxcross">
+								<option>{{ maxcross }}
+								<option>10
+								<option>9
+								<option>7
+								<option>6
+								<option>5
+								<option>4
+								<option>3
+								<option>2
+								<option>1
+								<option>99
+								<option>0
+							</select>
+						</td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Maxsize:</td>
+						<td class="txt10" colspan=2>
+							<select name="maxsize">
+								<option>{{ maxsize }}
+								<option>1000000
+								<option>250000
+								<option>200000
+								<option>175000
+								<option>150000
+								<option>125000
+								<option>100000
+								<option>80000
+								<option>60000
+								<option>40000
+								<option>20000
+								<option>10000
+								<option>5000
+							</select>
+						</td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Compression:</td>
+						<td class="txt10" colspan=2>
+							<select name="compression">
+								<option>{{ compression }}
+								<option>compress
+								<option>gzip
+								<option>bzip2
+								<option>szip
+							</select>
+						</td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Ownarticles:</td>
+						<td class="txt10" colspan=2>
+							<input type="checkbox" name="ownarticles" value="{{ ownarticles }}" {{ ownarticles }}>
+						</td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Maxbatchsize:</td>
+						<td class="txt10" colspan=2>
+							<select name="maxbatchsize">
+								<option>{{ maxbatchsize }}
+								<option>250000
+								<option>50000
+								<option>500000
+								<option>1000000
+								<option>0
+							</select>
+						</td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Batchtime:</td>
+						<td class="txt10" colspan=2>
+							<select name="batchtime">
+								<option>{{ batchtime }}
+								<option>1800
+								<option>300
+								<option>3600
+								<option>21600
+								<option>43200
+								<option>86400
+								</select>
+						</td>
+					</tr>
+					<tr class="bggray">
+						<td class="txt10">Subdomains:</td>
+						<td class="txt10" colspan=2>
+						{% for row in mailtransportdata %}
+						{% set checked = 'checked' %}
+						{% if row.status == 1 %}
+						{% set checked = '' %}
+						{% endif %}
+						<input type="checkbox" name="subdomain{{ dc }}" value="{{ row.status }};{{ row.src }}" {{ checked }}> {{ row.src }} <br>
+						{% set dc = dc + 1 %}
+						{% endfor %}
+						</td>
+					</tr>
+					<tr class="bggray">
+		                                <td class="txtrot11" colspan="2">&nbsp;
+                		                        <div>{{ msg }}</div>
+                        		        </td>
+					<tr class="bggray">
+						<td><input type="hidden" name="site" value="{{ site }}"></td>
+						<td><input type="submit" value="Update" width=100><br>
+						<a href="/cgi-bin/logout.cgi"><font class="txtred8">[Logout]</font></a>
+						&nbsp;&nbsp;
+						</td>
+					</tr>
+			</table>
+			</form>
+
+		</td>
+	</tr>
+	<tr>
+		<td colspan=7>
+		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
+			<tr>
+				<td class="txtweiss9">&copy; Frank Kl&ouml;ker &lt;eumel (at) admin.gnuu.de&gt;</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

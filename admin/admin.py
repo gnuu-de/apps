@@ -47,6 +47,65 @@ def checkbilling(tset):
             abort(400)
 
 
+@app.route('/adm/checkconf.cgi', methods=['GET', 'POST'])
+@app.route('/adm/checkconf.cgi/<user>', methods=['GET', 'POST'])
+def checkconf(user):
+    msg = ''
+    ownarticles = 0
+    dc = 1
+    cookie = request.cookies.get('gnuu')
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM sessions WHERE id = %s', (cookie,))
+    cookiesession = cursor.fetchone()
+    if cookiesession:
+        site = cookiesession['site']
+        if request.method == 'POST' and 'site' in request.form:
+            site = request.form['site']
+            newsgroups = request.form['newsgroups']
+            pathexcludes = request.form['pathexcludes']
+            maxcross = request.form['maxcross']
+            maxsize = request.form['maxsize']
+            ownanswer = request.form.getlist('ownarticles')
+            if ownanswer:
+                ownarticles = 1
+            compression = request.form['compression']
+            maxbatchsize = request.form['maxbatchsize']
+            batchtime = request.form['batchtime']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('UPDATE conf SET newsgroups = %s , pathexcludes = %s, maxcross = %s, maxsize = %s, ownarticles = %s, compression = %s, maxbatchsize = %s, batchtime = %s WHERE site = %s ', (newsgroups,pathexcludes,maxcross,maxsize,ownarticles,compression,maxbatchsize,batchtime,user))
+
+            cursor.execute('UPDATE transport SET status = 1 WHERE dst = %s ', ("bsmtp:"+user,))
+            for dcc in request.form.getlist('subdomain1'):
+                userdomain = dcc.split(";",1)
+                cursor.execute('UPDATE transport SET status = 0 WHERE src = %s ', (userdomain[1],))
+            cursor.execute('SELECT src,status FROM transport WHERE dst=%s', ("bsmtp:"+user,))
+            mailtransportdata = cursor.fetchall()
+            jobapi = requests.get("http://job/update/configmaps")
+            msg = 'Daten aktualisiert: %s' % jobapi.text
+            if mailtransportdata:
+                return render_template('checkconf.html', msg=msg,site=user,newsgroups=newsgroups,pathexcludes=pathexcludes,maxcross=maxcross,maxsize=maxsize,ownarticles=ownarticles,compression=compression,maxbatchsize=maxbatchsize,batchtime=batchtime,dc=dc,mailtransportdata=mailtransportdata)
+        else:
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM conf WHERE site = %s ', (user,))
+            account = cursor.fetchone()
+            if account:
+                newsgroups = account['newsgroups']
+                pathexcludes = account['pathexcludes']
+                maxcross = account['maxcross']
+                maxsize = account['maxsize']
+                if (account['ownarticles'] == 1):
+                    ownarticles = 'checked' 
+                compression = account['compression']
+                maxbatchsize = account['maxbatchsize']
+                batchtime = account['batchtime']
+            cursor.execute('SELECT src,status FROM transport WHERE dst=%s', ("bsmtp:"+user,))
+            mailtransportdata = cursor.fetchall()
+            if mailtransportdata:
+                return render_template('checkconf.html', msg=msg,site=user,newsgroups=newsgroups,pathexcludes=pathexcludes,maxcross=maxcross,maxsize=maxsize,ownarticles=ownarticles,compression=compression,maxbatchsize=maxbatchsize,batchtime=batchtime,dc=dc,mailtransportdata=mailtransportdata)
+            return render_template('index.html', msg='not found')
+    return redirect(url_for('login'))
+
+
 @app.route('/adm/checkuser.cgi', methods=['GET', 'POST'], defaults={"user": "0"})
 @app.route('/adm/checkuser.cgi/<user>', methods=['GET', 'POST'])
 def checkuser(user):
