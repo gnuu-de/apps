@@ -6,6 +6,7 @@ import crypt
 from hmac import compare_digest as compare_hash
 from os import environ
 import secrets
+import requests
 
 
 mysql_host = environ.get('mysql_host','localhost')
