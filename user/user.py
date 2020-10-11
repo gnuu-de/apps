@@ -19,6 +19,11 @@ mysql_user = environ.get('mysql_user')
 mysql_password = environ.get('mysql_password')
 mysql_db = environ.get('mysql_db')
 
+twilio_gateway_uri = environ.get('twilio_gateway_uri')
+twilio_identifier = environ.get('twilio_identifier')
+twilio_from = environ.get('twilio_from')
+twilio_to = environ.get('twilio_to')
+
 app = Flask(__name__)
 
 app.secret_key = 'your-secret-key'
@@ -29,6 +34,11 @@ app.config['MYSQL_USER'] = mysql_user
 app.config['MYSQL_PASSWORD'] = mysql_password
 app.config['MYSQL_DB'] = mysql_db
 
+app.config['TWILIO_GATEWAY_URI'] = twilio_gateway_uri
+app.config['TWILIO_IDENTIFIER'] = twilio_identifier
+app.config['TWILIO_FROM'] = twilio_from
+app.config['TWILIO_TO'] = twilio_to
+
 app.config['MAIL_SERVER']='mail'
 app.config['MAIL_PORT'] = 25
 app.config['MAIL_USE_TLS'] = False
@@ -36,6 +46,11 @@ app.config['MAIL_USE_SSL'] = False
 
 mail = Mail(app)
 mysql = MySQL(app)
+
+class ValidateInputSchemaSMS(Schema):
+    body = fields.Str(required=True, validate=Length(min=1,max=64))
+    checkfield = fields.Str(required=True, validate=Length(max=6))
+    hcheck = fields.Str(required=True, validate=Length(max=6))
 
 class ValidateInputSchemaEmail(Schema):
     email = fields.Email(required=False, validate=Length(max=64))
@@ -99,6 +114,7 @@ class ValidateInputSchemaLogin(Schema):
     username = fields.Str(required=True, validate=Length(max=13))
     password = fields.Str(required=False, validate=Length(max=64))
 
+validate_input_schema_sms = ValidateInputSchemaSMS()
 validate_input_schema_email = ValidateInputSchemaEmail()
 validate_input_schema_pw_failed = ValidateInputSchemaPwfailed()
 validate_input_schema_adduser = ValidateInputSchemaAdduser()
@@ -106,6 +122,36 @@ validate_input_schema_conf = ValidateInputSchemaConf()
 validate_input_schema_user = ValidateInputSchemaUser()
 validate_input_schema_login = ValidateInputSchemaLogin()
 
+
+@app.route('/cgi-bin/notfall.cgi', methods=['GET', 'POST'])
+def notfall():
+    msg = ''
+    letters = string.ascii_lowercase
+    checkfield = ''.join(random.sample(letters, 5))
+    if request.method == 'POST' and 'body' in request.form:
+        checkfield = request.form['checkfield']
+        hcheck = request.form['hcheck']
+        body = request.form['body']
+        errors = validate_input_schema_sms.validate(request.form)
+        if errors:
+            return render_template('notfall.html',msg=str(errors),body=body,checkfield=checkfield)
+        if checkfield == hcheck:
+            data = {
+              "From": twilio_from,
+              "To": twilio_to,
+              "Body": body
+            }
+            uri = "https://" + twilio_identifier + "@" + twilio_gateway_uri
+            twilio = requests.post(uri, data=data)
+            msg = 'Gateway status: %s' % twilio.ok
+            return render_template('notfall.html',msg=msg)
+        else:
+            msg = "checkfield was wrong"
+            return render_template('notfall.html',msg=msg,body=body,checkfield=checkfield)
+    else:
+        return render_template('notfall.html',checkfield=checkfield)
+
+    return render_template('notfall.html',checkfield=checkfield)
 
 @app.route('/cgi-bin/email.cgi', methods=['GET', 'POST'])
 def email():
@@ -122,7 +168,7 @@ def email():
         if errors:
             return render_template('mail.html',msg=str(errors),email=email,subject=subject,body=body,checkfield=checkfield)
         if checkfield == hcheck:
-            webmsg = Message(subject, sender = 'flaskmail@eutest.gnuu.de', recipients = ['flaskmail@eutest.gnuu.de'])
+            webmsg = Message(subject, sender = 'eumel@admin.gnuu.de', recipients = ['eumel@admin.gnuu.de'])
             webmsg.body = "%s\n\n%s" % (email,body)
             mail.send(webmsg)
 
