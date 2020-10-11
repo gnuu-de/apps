@@ -143,7 +143,7 @@ def notfall():
             }
             uri = "https://" + twilio_identifier + "@" + twilio_gateway_uri
             twilio = requests.post(uri, data=data)
-            msg = 'Gateway status: %s' % twilio.text
+            msg = 'Gateway status: %s' % twilio.ok
             return render_template('notfall.html',msg=msg)
         else:
             msg = "checkfield was wrong"
