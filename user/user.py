@@ -71,7 +71,7 @@ class ValidateInputSchemaAdduser(Schema):
     email = fields.Email(required=True, validate=Length(min=4,max=128))
     pwquestion = fields.Str(required=True, validate=Length(min=1,max=255))
     pwanswer = fields.Str(required=True, validate=Length(min=1,max=255))
-    checkfield = fields.Str(required=True, validate=Length(min=6,max=6))
+    checkfield = fields.Str(required=True, validate=Length(max=6))
     hcheck = fields.Str(required=True, validate=Length(max=6))
 
 class ValidateInputSchemaConf(Schema):
