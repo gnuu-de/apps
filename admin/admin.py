@@ -246,6 +246,7 @@ def logout():
         response.set_cookie("gnuu",cookie, max_age=0)
         return response
     else:
+        msg = "Re-Login"
         return render_template('login.html', msg=msg)
 
 @app.route('/adm/index.cgi')
