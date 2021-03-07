@@ -1,5 +1,6 @@
 from flask import Flask, redirect, url_for, request, jsonify
 from flask_mysqldb import MySQL
+from prometheus_flask_exporter import PrometheusMetrics
 import MySQLdb.cursors
 import re
 import csv
@@ -16,6 +17,8 @@ mysql_password = environ.get('mysql_password')
 mysql_db = environ.get('mysql_db')
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Application info', version='1.0.3')
 
 app.secret_key = 'your-secret-key'
 
