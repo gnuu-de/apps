@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, session, make_response
+from prometheus_flask_exporter import PrometheusMetrics
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
@@ -27,6 +28,8 @@ twilio_to = environ.get('twilio_to')
 app = Flask(__name__)
 
 app.secret_key = 'your-secret-key'
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Application info', version='1.0.3')
 
 app.config['MYSQL_HOST'] = mysql_host
 app.config['MYSQL_PORT'] = mysql_port
