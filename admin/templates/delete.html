@@ -3,24 +3,24 @@
 		<td colspan="7">
 		<table border=0 width=700 align=left cellspacing=1 cellpadding=2 class="bgblau04">
 			<tr>
-				<td class="txtweiss15"><b>gnuu::adm::index</b></td>
+				<td class="txtweiss15"><b>gnuu::adm::delete</b></td>
 			</tr>
 		</table>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="7">
-				{{ msg }} 
+		  Delete site:	{{ msg }} 
 		</td>
 		<tr><td colspan="7">
-		This is the Admin Interface. Take your choice:
-
 		<ul>
-		<li><a href="/adm/addbilling.cgi">Add billing</a>
-		<li><a href="/adm/checkbilling.cgi">Check billing</a>
-		<li><a href="/adm/checkuser.cgi">Check user</a> (/site or /email)
-		<li><a href="/adm/checkconf.cgi">Check conf</a> (/site)
-		<li><a href="/adm/deleteuser.cgi">Delete user</a> (/site)
+		<li> Deleted in database: {{ msg }} , now remove user data
+		<li> rm /data/spool/bsmtp/{{ msg }} 
+		<li> rm -rf /data/spool/uucp/{{ msg }} 
+		<li> rm -rf /data/spool/uucp/.Failed/{{ msg }} 
+		<li> rm -rf /data/spool/uucp/.Received{{ msg }} 
+		<li> rm -rf /data/spool/uucp/.Status/{{ msg }} 
+		<li> rm -rf /data/spool/news/outgoing/{{ msg }} 
 		</ul>
 		<a href="/adm/logout.cgi"><font class="txtred8">[Logout]</font></a>
 		</td>

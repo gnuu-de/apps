@@ -29,6 +29,28 @@ app.config['MYSQL_DB'] = mysql_db
 mysql = MySQL(app)
 
 
+@app.route('/adm/deleteuser.cgi', methods=['GET', 'POST'], defaults={"site": "0"})
+@app.route('/adm/deleteuser.cgi/<site>', methods=['GET', 'POST'])
+def deleteuser(site):
+    msg = ''
+    cookie = request.cookies.get('gnuu')
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM sessions WHERE id = %s', (cookie,))
+    cookiesession = cursor.fetchone()
+    if cookiesession:
+        try:
+            cursor.execute('select trigger_name from information_schema.triggers where event_object_schema='gnuu')
+            triggercount = cursor.fetchall()
+            if triggercount:
+                cursor.execute('DELETE from user WHERE site = %s', (site,))
+                cursor.execute('DELETE from conf WHERE site = %s', (site,))
+                cursor.execute('DELETE from transport WHERE dst = "bsmtp:%s"', (site,))
+                return render_template('delete.html', msg=site)
+            else:
+                return render_template('index.html', msg='no trigger found')
+        except ValueError:
+            abort(400)
+
 @app.route('/adm/checkbilling.cgi', methods=['GET', 'POST'], defaults={"tset": "465"})
 @app.route('/adm/checkbilling.cgi/<tset>', methods=['GET', 'POST'])
 def checkbilling(tset):
