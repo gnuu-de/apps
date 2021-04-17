@@ -39,7 +39,7 @@ def deleteuser(site):
     cookiesession = cursor.fetchone()
     if cookiesession:
         try:
-            cursor.execute('select trigger_name from information_schema.triggers where event_object_schema='gnuu')
+            cursor.execute('select trigger_name from information_schema.triggers where event_object_schema="gnuu"')
             triggercount = cursor.fetchall()
             if triggercount:
                 cursor.execute('DELETE from user WHERE site = %s', (site,))
