@@ -45,6 +45,7 @@ def deleteuser(site):
                 cursor.execute('DELETE from user WHERE site = %s', (site,))
                 cursor.execute('DELETE from conf WHERE site = %s', (site,))
                 cursor.execute('DELETE from transport WHERE dst = "bsmtp:%s"', (site,))
+                cursor.execute('UPDATE billing set site = "_%s", booktime = booktime WHERE site = "%s"', (site,site,))
                 return render_template('delete.html', msg=site)
             else:
                 return render_template('index.html', msg='no trigger found')
