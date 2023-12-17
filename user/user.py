@@ -106,7 +106,7 @@ class ValidateInputSchemaUser(Schema):
     strasse1 = fields.Str(required=True, validate=Length(max=128))
     strasse2 = fields.Str(required=False, validate=Length(max=128))
     land = fields.Str(required=True, validate=Length(max=2))
-    plz = fields.Int(required=True)
+    plz = fields.Str(required=True)
     ort = fields.Str(required=False, validate=Length(max=128))
     telefon = fields.Str(required=False, validate=Length(max=64))
     telefax = fields.Str(required=False, validate=Length(max=64))
